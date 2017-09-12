@@ -64,7 +64,7 @@ def seg_crop(file_name):
     		if (contentArea > 900  ):
     			cropped_image = img[y:y+h, x:x+w]
     			print(childIndex)
-    			cv2.imwrite(os.path.join(BASE_DIR,"croppedchildren/"+str(childIndex)+" of "+file_name+".jpg"),cropped_image)
+    			cv2.imwrite(os.path.join(BASE_DIR,"croppedchildren/"+file_name[:-3]+" of "+str(childIndex)+".jpg"),cropped_image)
 
     			img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 
