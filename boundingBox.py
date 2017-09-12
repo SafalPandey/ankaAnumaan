@@ -1,15 +1,18 @@
 import cv2
 import numpy as np
 from cropper import crop
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-path = "E:/_nepali char/data/safal 001.jpg"
+file_name="safal 001.jpg"
 
+path = os.path.join(BASE_DIR,"data/"+file_name)
 img = cv2.imread(path)
 img = crop(img,True)
 img_gray= cv2.imread(path,cv2.IMREAD_GRAYSCALE)
 img_gray = crop(img_gray,False)
 ret, thresh1 = cv2.threshold(img_gray,245,255,cv2.THRESH_BINARY)
-cv2.imwrite("thresholdcheck.jpg",thresh1)
+cv2.imwrite(os.path.join(BASE_DIR,"Thresholds/thresholdcheck of "+file_name+".jpg"),thresh1)
 ret, thresh = cv2.threshold(thresh1,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
 imga ,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
 
@@ -37,11 +40,11 @@ while True:
 	# print("here")
 	count+=1
 	x,y,w,h = cv2.boundingRect(contours[i])
-	
+
 
 	boxArea = w * h
 	print("BA:"+str(boxArea))
-	if boxArea < img_gray.size/100 : 
+	if boxArea < img_gray.size/100 :
 		# print("herein")
 		i = hierarchy[0][i][0]
 		# print(i)
@@ -57,18 +60,18 @@ while True:
 
 		contentArea = w * h
 		print(contentArea)
-		
+
 
 		if (contentArea > 900  ):
 			cropped_image = img[y:y+h, x:x+w]
 			print(childIndex)
-			cv2.imwrite("E:/_nepali char/croppedchildren/"+str(childIndex)+"AB.jpg",cropped_image)
+			cv2.imwrite(os.path.join(BASE_DIR,"croppedchildren/"+str(childIndex)+" of "+file_name+".jpg"),cropped_image)
 
 			img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 
 			cv2.drawContours(img, contours[childIndex], -1, (255,0,255),2, cv2.LINE_AA, maxLevel=2)
 			break
-	
+
 		if(hierarchy[0][childIndex][0] == -1):
 			break
 
@@ -76,8 +79,8 @@ while True:
 			childIndex = hierarchy[0][childIndex][0]
 
 			# cv2.imwrite('convehull.jpg',img)
-		
-	
+
+
 	i = hierarchy[0][i][0]
 	if(hierarchy[0][i][0]== -1):
 		break
@@ -99,8 +102,6 @@ cnt = contours[bigIndex]
 x,y,w,h = cv2.boundingRect(cnt)
 # img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 # cropped_image = img[y:y+h, x:x+w]
-cv2.imwrite('convehull.jpg',img)
+cv2.imwrite(os.path.join(BASE_DIR,'Segmentation map/seg_map of '+file_name+'.jpg'),img)
 
 #cv2.imshow('img',img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
