@@ -1,4 +1,4 @@
-import numpy 
+import numpy
 import cv2
 
 def crop(img,isColor):
@@ -28,5 +28,3 @@ def crop(img,isColor):
 	# img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 	cropped_image = img[y:y+h, x:x+w]
 	return cropped_image
-
-
