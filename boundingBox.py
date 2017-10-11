@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from cropper import crop
 import os
+import sys
 
 def seg_crop(file_name):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,13 +28,13 @@ def seg_crop(file_name):
             maxArea = area
             bigIndex = i
     # print(cv2.contourArea(contours[2]))
-    print(bigIndex)
+    # print(bigIndex)
     # cv2.drawContours(img, contours[index], -1, (255,0,255),2, cv2.LINE_AA, maxLevel=2)
-    print(hierarchy)
+    # print(hierarchy)
     # maxAreaContour = hierarchy[index]
     # print(maxAreaContour)
     i = hierarchy[0][bigIndex][2]
-    print(i)
+    # print(i)
     count = 0
     while True:
     	# print("here")
@@ -42,7 +43,7 @@ def seg_crop(file_name):
 
 
     	boxArea = w * h
-    	print("BA:"+str(boxArea))
+    	# print("BA:"+str(boxArea))
     	if boxArea < img_gray.size/100 :
     		# print("herein")
     		i = hierarchy[0][i][0]
@@ -58,12 +59,12 @@ def seg_crop(file_name):
     		x,y,w,h = cv2.boundingRect(contours[childIndex])
 
     		contentArea = w * h
-    		print(contentArea)
+    		# print(contentArea)
 
 
     		if (contentArea > 900  ):
     			cropped_image = img[y:y+h, x:x+w]
-    			print(childIndex)
+    			# print(childIndex)
     			cv2.imwrite(os.path.join(BASE_DIR,"croppedchildren/"+file_name[:-3]+" of "+str(childIndex)+".jpg"),cropped_image)
 
     			img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
@@ -89,13 +90,13 @@ def seg_crop(file_name):
 
     nextBoxIndex = hierarchy[0][0][2]
     # firtChild = contours[firstChildIndex]
-    firstChildIndex = hierarchy[0][nextBoxIndex][2]
+    # firstChildIndex = hierarchy[0][nextBoxIndex][2]
 
-    print(firstChildIndex)
+    # print(firstChildIndex)
 
 
 
-    print(contours[2])
+    # print(contours[2])
 
     cnt = contours[bigIndex]
     x,y,w,h = cv2.boundingRect(cnt)
@@ -104,3 +105,7 @@ def seg_crop(file_name):
     cv2.imwrite(os.path.join(BASE_DIR,'Segmentation map/seg_map of '+file_name+'.jpg'),img)
 
     #cv2.imshow('img',img)
+
+if __name__ == "__main__":
+    imga = seg_crop(sys.argv[1])
+    cv2.imshow('img',imga)
