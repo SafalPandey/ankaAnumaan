@@ -16,6 +16,7 @@ def get_numbers(file_name):
     print("Number of contours:",len(contours))
     for i in range(len(contours)):
 
+
         if hierarchy[0][i][3] != -1:
             continue
         x,y,w,h = cv2.boundingRect(contours[i])
@@ -23,6 +24,8 @@ def get_numbers(file_name):
             continue
         else:
             result = MODEL.classify(img[y:y+h, x:x+w],True)
+            # cv2.imshow('img',img[y:y+h,x:x+w])
+            # cv2.waitKey(0)
 
         cv2.drawContours(img, contours[i], -1, (255,0,255),2, cv2.LINE_AA, maxLevel=2)
         cv2.putText(img,str(result), (x-5,y-5), cv2.FONT_HERSHEY_SIMPLEX, 1, 0)

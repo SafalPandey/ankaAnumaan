@@ -20,7 +20,10 @@ def get_xy(offset,batch_size):
     x = []
     labels = []
     for f in filenames[offset*batch_size : batch_size*(offset+1)]:
-        img = np.array(cv2.imread(os.path.join(BASE_DIR+'/30x30_data',f),cv2.IMREAD_GRAYSCALE)).flatten()
+        img = cv2.imread(os.path.join(BASE_DIR+'/30x30_data',f),cv2.IMREAD_GRAYSCALE)
+        # cv2.imshow("img",img)
+        # cv2.waitKey(0)
+        img = np.array(img).flatten()
         x.append(img)
         labels.append([])
 

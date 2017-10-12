@@ -12,7 +12,7 @@ n_nodes_hl2 = 500
 n_nodes_hl3 = 500
 
 n_classes = 10
-batch_size = 100
+batch_size = 500
 
 x = tf.placeholder('float', [None, 900])
 y = tf.placeholder('float')
@@ -20,18 +20,18 @@ y = tf.placeholder('float')
 # hidden_2_layer = {}
 # hidden_3_layer = {}
 def neural_network_model(data):
-    hidden_1_layer = {'weights':tf.Variable(tf.random_normal([900, n_nodes_hl1]),name = 'hl1_W'),
-                      'biases':tf.Variable(tf.random_normal([n_nodes_hl1]),name = 'hl1_B')}
 
-    hidden_2_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl1, n_nodes_hl2]),name = 'hl2_W'),
-                      'biases':tf.Variable(tf.random_normal([n_nodes_hl2]),name = 'hl2_B')}
+    hidden_1_layer = {'weights':tf.get_variable('hl1_W',shape = [900, n_nodes_hl1], initializer = tf.zeros_initializer),
+                      'biases':tf.get_variable('hl1_B',shape = [n_nodes_hl1],initializer = tf.zeros_initializer) }
 
-    hidden_3_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl2, n_nodes_hl3]),name = 'hl3_W'),
-                      'biases':tf.Variable(tf.random_normal([n_nodes_hl3]),name = 'hl3_B')}
+    hidden_2_layer = {'weights':tf.get_variable('hl2_W',shape = [n_nodes_hl1, n_nodes_hl2],initializer = tf.zeros_initializer),
+                      'biases':tf.get_variable('hl2_B',shape = [n_nodes_hl2],initializer = tf.zeros_initializer)}
 
-    output_layer = {'weights':tf.Variable(tf.random_normal([n_nodes_hl3, n_classes]),name = 'op_W'),
-                    'biases':tf.Variable(tf.random_normal([n_classes]),name = 'op_B')}
+    hidden_3_layer = {'weights':tf.get_variable('hl3_W',shape = [n_nodes_hl2, n_nodes_hl3],initializer = tf.zeros_initializer),
+                      'biases':tf.get_variable('hl3_B',shape = [n_nodes_hl3],initializer = tf.zeros_initializer)}
 
+    output_layer ={'weights':tf.get_variable('op_W',shape = [n_nodes_hl3, n_classes],initializer = tf.zeros_initializer),
+                          'biases':tf.get_variable('op_B',shape = [n_classes],initializer = tf.zeros_initializer)}
 
     l1 = tf.add(tf.matmul(data,hidden_1_layer['weights']), hidden_1_layer['biases'])
     l1 = tf.nn.relu(l1)
@@ -51,10 +51,12 @@ def train_neural_network(x):
     # OLD VERSION:
     #cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(prediction,y) )
     # NEW:
+    # global_step = tf.Variable(0, trainable=False)
+    # learning_rate = tf.train.exponential_decay(.01, global_step,100000, 0.96, staircase=True)
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y) )
     optimizer = tf.train.AdamOptimizer().minimize(cost)
 
-    hm_epochs = 100
+    hm_epochs = 600
     saver = tf.train.Saver()
     with tf.Session() as sess:
         # OLD:
@@ -71,8 +73,14 @@ def train_neural_network(x):
                 epoch_loss += c
 
             print('Epoch', epoch+1, 'completed out of',hm_epochs,'loss:',epoch_loss)
+            if((epoch+1) % 500 == 0):
+                saver.save(sess,os.path.join(BASE_DIR,'models/'+str(epoch+1)+'epochs.txt'))
 
-        saver.save(sess,os.path.join(BASE_DIR,'models/'+hm_epochs+'epochs.txt'))
+            if epoch_loss == 0:
+                saver.save(sess,os.path.join(BASE_DIR,'models/'+str(epoch+1)+'epochs.txt'))
+                break
+
+        saver.save(sess,os.path.join(BASE_DIR,'models/'+str(epoch+1)+'epochs.txt'))
         # correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
         #
         # accuracy = tf.reduce_mean(tf.cast(correct, 'float'))

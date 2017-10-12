@@ -32,7 +32,7 @@ def resize_img(arg,isImage = False):
     h,w , channels= img.shape
     if h < w:
         padded_img = cv2.copyMakeBorder(img,int((w-h)/2),int((w-h)/2),0,0,cv2.BORDER_CONSTANT,value = [255,255,255])
-    if w < h:
+    else:
 
         padded_img = cv2.copyMakeBorder(img,0,0,int((h-w)/2),int((h-w)/2),cv2.BORDER_CONSTANT,value = [255,255,255])
 

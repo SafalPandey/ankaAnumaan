@@ -1,2 +1,2 @@
-model_checkpoint_path: "D:\\_nepali char\\models/100epochs.txt"
-all_model_checkpoint_paths: "D:\\_nepali char\\models/100epochs.txt"
+model_checkpoint_path: "D:\\_nepali char\\models/600900epochs.txt"
+all_model_checkpoint_paths: "D:\\_nepali char\\models/600900epochs.txt"
