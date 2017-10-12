@@ -23,8 +23,11 @@ def resize_data():
         rotated_img = numpy.rot90(resized_img,-1)
         cv2.imwrite(os.path.join(BASE_DIR,'30x30_data/'+f),rotated_img)
 
-def resize_img(path):
-    img = cv2.imread(path)
+def resize_img(arg,isImage = False):
+    if isImage:
+        img = arg
+    else:
+        img = cv2.imread(arg)
     # print(path)
     h,w , channels= img.shape
     if h < w:
