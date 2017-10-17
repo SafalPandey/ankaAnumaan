@@ -16,20 +16,21 @@ one_hot = { 0:[1,0,0,0,0,0,0,0,0,0],
             8:[0,0,0,0,0,0,0,0,1,0],
             9:[0,0,0,0,0,0,0,0,0,1]    }
 
-def get_xy(offset,batch_size):
+def get_xy(offset,batch_size,isCNN=False):
     x = []
     labels = []
     for f in filenames[offset*batch_size : batch_size*(offset+1)]:
         img = cv2.imread(os.path.join(BASE_DIR+'/30x30_data',f),cv2.IMREAD_GRAYSCALE)
         # cv2.imshow("img",img)
         # cv2.waitKey(0)
-        img = np.array(img).flatten()
+        if isCNN == False :
+            img = np.array(img).flatten()
         x.append(img)
         labels.append([])
 
         labels[-1].append(one_hot[int(f[0])])
 
-
+    # print(len(filenames[offset*batch_size : batch_size*(offset+1)]))
     return x,labels
 
 

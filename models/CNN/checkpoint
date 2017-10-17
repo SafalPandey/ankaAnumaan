@@ -1,0 +1,3 @@
+model_checkpoint_path: "D:\\_nepali char\\models/CNN/1000epochs.txt"
+all_model_checkpoint_paths: "D:\\_nepali char\\models/CNN/47epochs.txt"
+all_model_checkpoint_paths: "D:\\_nepali char\\models/CNN/1000epochs.txt"

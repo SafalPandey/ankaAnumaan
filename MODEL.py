@@ -8,7 +8,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 n_nodes_hl1 = 500
-n_nodes_hl2 = 500
+n_nodes_hl2 = 1000
 n_nodes_hl3 = 500
 n_classes = 10
 
@@ -27,7 +27,7 @@ output_layer ={'weights':tf.get_variable('op_W',shape = [n_nodes_hl3, n_classes]
 saver = tf.train.Saver()
 sess = tf.Session()
     # sess.run(tf.global_variables_initializer())
-saver.restore(sess,os.path.join(BASE_DIR,'models/600epochs.txt'))
+saver.restore(sess,os.path.join(BASE_DIR,'models/677500epochs.txt'))
 
 x= tf.placeholder('float',[None,900])
 def neural_network_model(data):
@@ -59,7 +59,7 @@ def classify(arg,isImage = False):
     x = np.array(img).flatten()
     prediction = neural_network_model([tf.cast(x,tf.float32)])
     # result = sess.run(tf.argmax(sess.run(tf.nn.softmax(sess.run(prediction))),1))
-    print(prediction)
+    # print(sess.run(tf.nn.softmax(prediction)))
     result = sess.run(tf.argmax(tf.nn.softmax(prediction),1))
     print(result)
     return result
