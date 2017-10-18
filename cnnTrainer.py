@@ -9,7 +9,7 @@ batch_size = 20
 x = tf.placeholder('float', [None,30,30])
 y = tf.placeholder('float')
 
-# keep_rate = 0.7
+keep_rate = 0.7
 keep_prob = tf.placeholder(tf.float32)
 
 def conv2d(x, W):
@@ -42,7 +42,7 @@ def convolutional_neural_network(x):
 
     fc = tf.reshape(conv2,[-1, 8*8*64])
     fc = tf.nn.relu(tf.matmul(fc, weights['W_fc'])+biases['b_fc'])
-    # fc = tf.nn.dropout(fc, keep_rate)
+    fc = tf.nn.dropout(fc, keep_rate)
 
     output = tf.matmul(fc, weights['out'])+biases['out']
 
@@ -67,7 +67,7 @@ def train_neural_network(x):
                 # print(len(epoch_y))
                 _, c = sess.run([optimizer, cost], feed_dict={x: epoch_x, y: epoch_y})
                 epoch_loss += c
-            if (epoch+1) % 500 == 0 :
+            if (epoch+1) % 250 == 0 :
                 saver.save(sess,os.path.join(BASE_DIR,'models/CNN/'+str(epoch+1)+'epochs.txt'))
             print('Epoch', epoch+1, 'completed out of',hm_epochs,'loss:',epoch_loss)
             # if epoch_loss < 10000:

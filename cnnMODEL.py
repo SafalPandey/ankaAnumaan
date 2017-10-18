@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 n_classes = 10
-# keep_rate = 0.9
+keep_rate = 0.7
 
 # keep_prob = tf.placeholder(tf.float32)
 
@@ -34,7 +34,7 @@ def maxpool2d(x):
 saver = tf.train.Saver()
 sess = tf.Session()
     # sess.run(tf.global_variables_initializer())
-saver.restore(sess,os.path.join(BASE_DIR,'models/CNN/223epochs.txt'))
+saver.restore(sess,os.path.join(BASE_DIR,'models/CNN/353epochs.txt'))
 
 x= tf.placeholder('float',[None,900])
 def cnn_neural_network_model(x):
@@ -49,7 +49,7 @@ def cnn_neural_network_model(x):
 
     fc = tf.reshape(conv2,[-1, 8*8*64])
     fc = tf.nn.relu(tf.matmul(fc, weights['W_fc'])+biases['b_fc'])
-    # fc = tf.nn.dropout(fc, keep_rate)
+    fc = tf.nn.dropout(fc, keep_rate)
 
     output = tf.matmul(fc, weights['out'])+biases['out']
 
