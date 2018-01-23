@@ -26,13 +26,13 @@ def get_numbers(file_name):
             continue
         else:
             result = cnnMODEL.classify(img[y:y+h, x:x+w],True)
-            # cv2.imshow('img',img[y:y+h,x:x+w])
-            # cv2.waitKey(0)
 
         cv2.drawContours(img, contours[i], -1, (255,0,255),2, cv2.LINE_AA, maxLevel=2)
         cv2.putText(img,str(result), (x-5,y-5), cv2.FONT_HERSHEY_SIMPLEX, .5, 0)
         img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
     cv2.imwrite(os.path.join(BASE_DIR,"input/Contoured "+file_name),img)
+    cv2.imshow('img',img)
+    cv2.waitKey(0)
 
 if __name__ == "__main__":
     if (len(sys.argv) == 2):
