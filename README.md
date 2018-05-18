@@ -31,5 +31,10 @@ _You need to have pip installed for this to work._
 > This takes the image file: **0to9.jpg** inside **input/** folder and runs it through the selected neural network model (Hardcoded in **ankaAnumaan.py** file.) and gives a labelled image to **output/** folder.  
 >You can use any one of the images inside **input/** folder or specify the absolute path (from root) to the image you wish to classify.  
 >_Please note that only images with high contrast are contoured and then classified accurately._
->
 > **Enjoy :D**
+
+#### Input image
+> ![Input image](input/0to9.jpg)
+#### Output image
+> ![Output image](output/Labelled%200to9.jpg)
+
